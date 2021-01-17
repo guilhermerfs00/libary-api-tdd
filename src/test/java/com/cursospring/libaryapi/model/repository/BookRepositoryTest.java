@@ -11,6 +11,10 @@ import org.springframework.boot.test.autoconfigure.orm.jpa.TestEntityManager;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 
+import static org.assertj.core.api.Assertions.assertThat;
+
+import java.util.Optional;
+
 @ExtendWith(SpringExtension.class)
 @ActiveProfiles("test")
 @DataJpaTest
@@ -28,7 +32,7 @@ public class BookRepositoryTest {
 
         String isbn = "123";
 
-        Book book = Book.builder().isbn("123").author("Fulano").title("As aventuras").build();
+        Book book = createNewBook();
 
         entityManager.persist(book);
 
@@ -46,5 +50,47 @@ public class BookRepositoryTest {
         boolean exist = repository.existsByIsbn(isbn);
 
         Assertions.assertThat(exist).isFalse();
+    }
+
+    @Test
+    @DisplayName("Deve obter um livro por Id")
+    public void findByIdTest() {
+        Book book = createNewBook();
+        entityManager.persist(book);
+
+        Optional<Book> foundBook = repository.findById(book.getId());
+
+        assertThat(foundBook.isPresent()).isTrue();
+    }
+
+    @Test
+    @DisplayName("Deve salvar um livro")
+    public void saveBookTest() {
+        Book book = createNewBook();
+
+        Book savedBook = repository.save(book);
+
+        assertThat(savedBook.getId()).isNotNull();
+    }
+
+    @Test
+    @DisplayName("Deve deletar um livro")
+    public void deleteBookTest() {
+        Book book = createNewBook();
+
+        entityManager.persist(book);
+
+        Book foundBook = entityManager.find(Book.class, book.getId());
+
+        repository.delete(foundBook);
+
+        Book deletedBook = entityManager.find(Book.class, book.getId());
+
+        assertThat(deletedBook).isNull();
+
+    }
+
+    private Book createNewBook() {
+        return Book.builder().isbn("123").author("Fulano").title("As aventuras").build();
     }
 }

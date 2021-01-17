@@ -1,7 +1,9 @@
 package com.cursospring.libaryapi.api.exception;
 
 import com.cursospring.libaryapi.exception.BusinessException;
+import org.springframework.http.HttpStatus;
 import org.springframework.validation.BindingResult;
+import org.springframework.web.server.ResponseStatusException;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -13,13 +15,16 @@ public class ApiErrors {
 
     public ApiErrors(BindingResult bindResult) {
         this.errors = new ArrayList<>();
-        bindResult.getAllErrors().stream().forEach( error -> this.errors.add(error.getDefaultMessage()));
+        bindResult.getAllErrors().stream().forEach(error -> this.errors.add(error.getDefaultMessage()));
     }
 
     public ApiErrors(BusinessException ex) {
         this.errors = Arrays.asList(ex.getMessage());
     }
 
+    public ApiErrors(ResponseStatusException ex) {
+        this.errors = Arrays.asList(ex.getReason());
+    }
     public List<String> getErrors() {
         return errors;
     }
