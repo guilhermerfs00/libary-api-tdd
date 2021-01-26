@@ -1,8 +1,8 @@
 package com.cursospring.libaryapi.service.impl;
 
+import com.cursospring.libaryapi.exception.BusinessException;
 import com.cursospring.libaryapi.model.entiti.Book;
 import com.cursospring.libaryapi.model.repository.BookRepository;
-import com.cursospring.libaryapi.exception.BusinessException;
 import com.cursospring.libaryapi.service.BookService;
 import org.springframework.data.domain.Example;
 import org.springframework.data.domain.ExampleMatcher;
@@ -62,6 +62,6 @@ public class BookServiceImpl implements BookService {
 
     @Override
     public Optional<Book> getBookByIsBn(String isbn) {
-        return Optional.empty();
+        return repository.findByIsbn(isbn);
     }
 }
