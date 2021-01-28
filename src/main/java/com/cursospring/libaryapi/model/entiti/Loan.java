@@ -16,6 +16,7 @@ import java.time.LocalDate;
 public class Loan {
 
     @Id
+    @Column
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
@@ -30,8 +31,8 @@ public class Loan {
     private Book book;
 
     @Column
-    private boolean returned;
+    private LocalDate loanDate;
 
     @Column
-    private LocalDate loanDate;
+    private Boolean returned;
 }

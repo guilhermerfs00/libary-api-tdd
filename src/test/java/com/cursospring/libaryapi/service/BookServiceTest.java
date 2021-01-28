@@ -70,7 +70,7 @@ public class BookServiceTest {
 
         assertThat(throwable)
                 .isInstanceOf(BusinessException.class)
-                .hasMessage("Isbn já cadastrado");
+                .hasMessage("Isbn já cadastrado.");
 
         Mockito.verify(repository, Mockito.never()).save(book);
     }
@@ -188,7 +188,7 @@ public class BookServiceTest {
         String isBn = "1230";
         when(repository.findByIsbn(isBn)).thenReturn(Optional.of(Book.builder().id(1l).isbn(isBn).build()));
 
-        var book = service.getBookByIsBn(isBn);
+        var book = service.getBookByIsbn(isBn);
 
         assertThat(book.isPresent()).isTrue();
         assertThat(book.get().getId()).isEqualTo(1l);

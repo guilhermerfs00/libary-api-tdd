@@ -62,12 +62,12 @@ public class LoanControllerTest {
     @Test
     @DisplayName("Deve realizar um emprestimo")
     public void createLoanTest() throws Exception {
-        LoanDTO dto = LoanDTO.builder().email("customer@email.com").isbn("123").customer("Fulano").build();
+        LoanDTO dto = LoanDTO.builder().isbn("123").customer("Fulano").build();
 
         String json = new ObjectMapper().writeValueAsString(dto);
 
         Book book = Book.builder().id(1l).isbn("123").build();
-        BDDMockito.given(bookService.getBookByIsBn("123")).willReturn(Optional.of(book));
+        BDDMockito.given(bookService.getBookByIsbn("123")).willReturn(Optional.of(book));
 
         Loan loan = Loan.builder().id(1l).customer("Fulano").book(book).loanDate(LocalDate.now()).build();
 
@@ -91,7 +91,7 @@ public class LoanControllerTest {
         LoanDTO dto = LoanDTO.builder().isbn("123").customer("Fulano").build();
         String json = new ObjectMapper().writeValueAsString(dto);
 
-        BDDMockito.given(bookService.getBookByIsBn("123")).willReturn(Optional.empty());
+        BDDMockito.given(bookService.getBookByIsbn("123")).willReturn(Optional.empty());
 
         MockHttpServletRequestBuilder request = MockMvcRequestBuilders.post(LOAN_API)
                 .accept(APPLICATION_JSON)
@@ -113,7 +113,7 @@ public class LoanControllerTest {
         String json = new ObjectMapper().writeValueAsString(dto);
 
         Book book = Book.builder().id(1l).isbn("123").build();
-        BDDMockito.given(bookService.getBookByIsBn("123")).willReturn(Optional.of(book));
+        BDDMockito.given(bookService.getBookByIsbn("123")).willReturn(Optional.of(book));
 
         BDDMockito.given(loanService.save(any(Loan.class)))
                 .willThrow(new BusinessException("Book already loaned"));
